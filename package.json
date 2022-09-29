@@ -1,0 +1,28 @@
+{
+  "name": "hive",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devalexandre/hive.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "“MIT”",
+  "bugs": {
+    "url": "https://github.com/devalexandre/hive/issues"
+  },
+  "homepage": "https://github.com/devalexandre/hive#readme",
+  "dependencies": {
+    "cote": "^1.0.3",
+    "pino": "^8.6.1",
+    "pino-pretty": "^9.1.0"
+  },
+  "devDependencies": {
+    "mocha": "^10.0.0"
+  }
+}
