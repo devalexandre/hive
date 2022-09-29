@@ -7,11 +7,13 @@ class ServiceBroker {
         this.broker = new brokers[opts.brokerOpts.broker](opts.brokerOpts);
         this.req = `${this.name}-REQ`;
         this.res = `${this.name}-RES`;
+        this.actions = opts.actions;
         
         
     }
 
     async call(cmd, payload){
+        this.broker.logger.info('ServiceBroker: call');
        await this.broker.publish({topic: this.req, data: {
             requester: this.name,
             cmd,
@@ -36,19 +38,18 @@ class ServiceBroker {
         if(!this.broker){
             throw new Error('ServiceBroker: broker is required');
         }
-        if(!this.actions || !this.actions.length){
+        if(!this.actions){
             throw new Error('ServiceBroker: actions is required');
         }
     }
 
     async start(){
-
-       
+        this.broker.logger.info('ServiceBroker: start');
             this.validations();
             if(Object.hasOwnProperty.call(this.broker, 'start')){
                 await this.broker.start();
             }
-            this.received();
+        //    await this.received();
      
     }
 
@@ -58,8 +59,9 @@ class ServiceBroker {
         }
     }
 
-    async received(){
-        this.broker.subscribe({topic: `${this.name}-REQ`})
+    async subscribe(){
+        this.broker.logger.info('ServiceBroker: received');
+       return  this.broker.subscribe({topic: `${this.name}.REQ`})
         .then((req) => {
             this.broker.logger.info(`ServiceBroker: ${this.name} received request`, req);
             let response;
@@ -104,6 +106,8 @@ class ServiceBroker {
                         status: 200,
                         payload: res
                     }
+                    this.broker.logger.info('ServiceBroker: response', response);
+                                 
                     this.broker.publish({topic: `${requester}-RES`, params: JSON.stringify(response)});
                 }                        
 
